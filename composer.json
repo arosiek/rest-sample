@@ -15,6 +15,9 @@
         "symfony/yaml": "7.3.*"
     },
     "require-dev": {
+        "phpunit/phpunit": "^12.1",
+        "symfony/browser-kit": "7.3.*",
+        "symfony/css-selector": "7.3.*"
     },
     "config": {
         "allow-plugins": {
@@ -55,7 +58,8 @@
         ],
         "post-update-cmd": [
             "@auto-scripts"
-        ]
+        ],
+        "phpunit-check": "phpunit --configuration phpunit.dist.xml"
     },
     "conflict": {
         "symfony/symfony": "*"
