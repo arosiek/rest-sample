@@ -26,7 +26,7 @@
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "$ref": "#/components/schemas/Task"
+                                        "$ref": "#/components/schemas/Task-Task.Read"
                                     }
                                 }
                             }
@@ -35,7 +35,39 @@
                 },
                 "summary": "Retrieves the collection of Task resources.",
                 "description": "Retrieves the collection of Task resources.",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "description": "",
+                        "required": false,
+                        "deprecated": false,
+                        "allowEmptyValue": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "style": "form",
+                        "explode": false,
+                        "allowReserved": false
+                    },
+                    {
+                        "name": "status[]",
+                        "in": "query",
+                        "description": "",
+                        "required": false,
+                        "deprecated": false,
+                        "allowEmptyValue": false,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "style": "form",
+                        "explode": true,
+                        "allowReserved": false
+                    }
+                ],
                 "deprecated": false
             },
             "post": {
@@ -49,7 +81,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/Task"
+                                    "$ref": "#/components/schemas/Task-Task.Read"
                                 }
                             }
                         },
@@ -106,7 +138,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/Task"
+                                "$ref": "#/components/schemas/Task-Task.Write"
                             }
                         }
                     },
@@ -127,7 +159,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/Task"
+                                    "$ref": "#/components/schemas/Task-Task.Read"
                                 }
                             }
                         }
@@ -236,7 +268,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/Task"
+                                    "$ref": "#/components/schemas/Task-Task.Read"
                                 }
                             }
                         },
@@ -329,7 +361,7 @@
                     "content": {
                         "application/merge-patch+json": {
                             "schema": {
-                                "$ref": "#/components/schemas/Task"
+                                "$ref": "#/components/schemas/Task-Task.Write"
                             }
                         }
                     },
@@ -526,7 +558,7 @@
                     }
                 }
             },
-            "Task": {
+            "Task-Task.Read": {
                 "type": "object",
                 "description": "",
                 "deprecated": false,
@@ -555,44 +587,58 @@
                         ]
                     },
                     "due_date": {
-                        "type": [
-                            "string",
-                            "null"
-                        ],
-                        "format": "date-time"
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-06-04 07:18:22"
                     },
                     "created_at": {
                         "readOnly": true,
                         "type": "string",
-                        "format": "date-time"
+                        "format": "date-time",
+                        "example": "2025-06-04 07:18:22"
                     },
                     "updated_at": {
                         "readOnly": true,
                         "type": "string",
-                        "format": "date-time"
+                        "format": "date-time",
+                        "example": "2025-06-04 07:18:22"
+                    }
+                },
+                "required": [
+                    "title"
+                ]
+            },
+            "Task-Task.Write": {
+                "type": "object",
+                "description": "",
+                "deprecated": false,
+                "required": [
+                    "title"
+                ],
+                "properties": {
+                    "title": {
+                        "type": "string"
                     },
-                    "dueDate": {
+                    "description": {
                         "type": [
                             "string",
                             "null"
-                        ],
-                        "format": "date-time"
+                        ]
                     },
-                    "createdAt": {
-                        "readOnly": true,
-                        "type": [
-                            "string",
-                            "null"
-                        ],
-                        "format": "date-time"
+                    "status": {
+                        "default": "pending",
+                        "example": "pending",
+                        "type": "string",
+                        "enum": [
+                            "pending",
+                            "in_progress",
+                            "completed"
+                        ]
                     },
-                    "updatedAt": {
-                        "readOnly": true,
-                        "type": [
-                            "string",
-                            "null"
-                        ],
-                        "format": "date-time"
+                    "due_date": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-06-04 07:18:22"
                     }
                 }
             }

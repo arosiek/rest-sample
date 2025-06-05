@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
@@ -15,6 +16,8 @@ use App\Repository\TaskRepository;
 use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: TaskRepository::class)]
 #[ApiResource(
@@ -25,32 +28,46 @@ use Doctrine\ORM\Mapping as ORM;
         new Patch(),
         new Delete(),
     ],
+    normalizationContext: ['groups' => ['Task:Read']],
+    denormalizationContext: ['groups' => ['Task:Write']],
     paginationEnabled: false,
 )]
 #[ApiFilter(SearchFilter::class, properties: ['status' => 'exact'])]
 #[ORM\HasLifecycleCallbacks]
 class Task
 {
+    #[Groups(['Task:Read'])]
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Groups(['Task:Read', 'Task:Write'])]
+    #[Assert\NotBlank()]
+    #[Assert\NotNull()]
     #[ORM\Column(length: 255)]
     private string $title;
 
+    #[Groups(['Task:Read', 'Task:Write'])]
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
+    #[Groups(['Task:Read', 'Task:Write'])]
     #[ORM\Column(enumType: TaskStatus::class, options: ['default' => TaskStatus::PENDING])]
     private TaskStatus $status = TaskStatus::PENDING;
 
+    #[Groups(['Task:Read', 'Task:Write'])]
+    #[ApiProperty(openapiContext: ['type' => 'string', 'format' => 'date-time', 'example' => '2025-06-04 07:18:22'])]
     #[ORM\Column(nullable: true)]
     private ?DateTimeImmutable $due_date = null;
 
+    #[Groups(['Task:Read'])]
+    #[ApiProperty(openapiContext: ['type' => 'string', 'format' => 'date-time', 'example' => '2025-06-04 07:18:22'])]
     #[ORM\Column]
     private ?DateTimeImmutable $created_at = null;
 
+    #[Groups(['Task:Read'])]
+    #[ApiProperty(openapiContext: ['type' => 'string', 'format' => 'date-time', 'example' => '2025-06-04 07:18:22'])]
     #[ORM\Column]
     private ?DateTimeImmutable $updated_at = null;
 
@@ -123,7 +140,6 @@ class Task
     {
         return $this->updated_at;
     }
-
 
     #[ORM\PrePersist]
     public function onPrePersist(): void
