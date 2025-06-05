@@ -19,6 +19,9 @@ final class TaskTest extends TestCase
     {
         $this->assertNull($this->task->getId());
 
+        $this->task->setId(10);
+        $this->assertSame(10, $this->task->getId());
+
         $this->task->setTitle('Test Task');
         $this->assertSame('Test Task', $this->task->getTitle());
 
