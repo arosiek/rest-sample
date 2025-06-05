@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
 use App\Enum\TaskStatus;
 use App\Repository\TaskRepository;
 use DateTimeImmutable;
@@ -10,7 +12,13 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TaskRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    operations: [
+    new Post(),
+    new GetCollection(),
+    ],
+    paginationEnabled: false,
+)]
 #[ORM\HasLifecycleCallbacks]
 class Task
 {

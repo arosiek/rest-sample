@@ -6,6 +6,7 @@ use ApiPlatform\Metadata\HttpOperation;
 use ApiPlatform\Symfony\Bundle\Test\ApiTestCase;
 use ApiPlatform\Symfony\Bundle\Test\Client;
 use App\Enum\TaskStatus;
+use App\Factory\TaskFactory;
 use DateTimeImmutable;
 use Zenstruck\Foundry\Test\Factories;
 use Zenstruck\Foundry\Test\ResetDatabase;
@@ -55,5 +56,23 @@ class TaskTest extends ApiTestCase
                 'updated_at' => $responseTime->format('Y-m-d H:i:s'),
             ])
         );
+    }
+
+    public function testFullTaskCollectionProvidedViaGetRequest(): void
+    {
+        //Arrange
+        TaskFactory::createMany(100);
+
+        //Act
+        $response = $this->client->request(
+            HttpOperation::METHOD_GET,
+            '/tasks',
+            [
+                'headers' => ['accept' => 'application/json'],
+            ]
+        );
+
+        //Assert
+        $this->assertCount(100, $response->toArray());
     }
 }
