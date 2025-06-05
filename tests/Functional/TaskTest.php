@@ -251,4 +251,24 @@ class TaskTest extends ApiTestCase
 
         return $repository;
     }
+
+    public function testStatusFilterReturnsFullTaskCollectionViaGetRequest(): void
+    {
+        //Arrange
+        TaskFactory::createMany(100, ['status' => TaskStatus::PENDING]);
+        TaskFactory::createMany(30, ['status' => TaskStatus::COMPLETED]);
+
+        //Act
+        $response = $this->client->request(
+            HttpOperation::METHOD_GET,
+            '/tasks',
+            [
+                'headers' => ['accept' => 'application/json'],
+                'query' => ['status' => TaskStatus::COMPLETED->value],
+            ]
+        );
+
+        //Assert
+        $this->assertCount(30, $response->toArray());
+    }
 }
