@@ -41,4 +41,5 @@ symfony composer analyse          #to run all above
 ## RESTful API Documentation
 
 ## Comment
-
+Requirement 2.4 referred to the PUT method. However, according to the description and RESTful standards, it should be the PATCH method.
+PUT replaces the entire resource with new data, whereas PATCH updates only specific fields of the resource.

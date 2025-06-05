@@ -126,4 +126,59 @@ class TaskTest extends ApiTestCase
         $this->assertResponseStatusCodeSame(404);
     }
 
+    public function testTaskSuccessfullyUpdatedViaPatchRequest(): void
+    {
+        //Arrange
+        $taskProxy = TaskFactory::createOne([
+            'title' => 'Alte Aufgabe',
+            'status' => TaskStatus::PENDING,
+        ]);
+
+        $patchedData = [
+            'title' => 'Neue Aufgabe',
+            'status' => TaskStatus::COMPLETED->value,
+        ];
+
+        //Act
+        $response = $this->client->request(
+            HttpOperation::METHOD_PATCH,
+            '/tasks/' . $taskProxy->getId(),
+            [
+                'headers' => [
+                    'accept' => 'application/json',
+                    'Content-Type' => 'application/merge-patch+json'
+                ],
+                'json' => $patchedData,
+            ]
+        );
+
+        //Assert
+        $responseTime = new DateTimeImmutable($response->getHeaders()['date'][0]);
+        $this->assertJsonContains(
+            array_filter(array_merge(
+                $this->mapTaskToResponseData($taskProxy),
+                $patchedData,
+                ['updated_at' => $responseTime->format('Y-m-d H:i:s'),]
+            ))
+        );
+    }
+
+    public function testPatchSingleTaskReturns404ForNotExisting(): void
+    {
+        //Act
+        $response = $this->client->request(
+            HttpOperation::METHOD_PATCH,
+            '/tasks/0',
+            [
+                'headers' => [
+                    'accept' => 'application/json',
+                    'Content-Type' => 'application/merge-patch+json'
+                ],
+                'json' => [],
+            ]
+        );
+
+        //Assert
+        $this->assertResponseStatusCodeSame(404);
+    }
 }

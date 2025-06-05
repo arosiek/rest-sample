@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use App\Enum\TaskStatus;
 use App\Repository\TaskRepository;
@@ -18,6 +19,7 @@ use Doctrine\ORM\Mapping as ORM;
         new Post(),
         new GetCollection(),
         new Get(),
+        new Patch(),
     ],
     paginationEnabled: false,
 )]
