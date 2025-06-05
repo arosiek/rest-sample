@@ -79,6 +79,28 @@ class TaskTest extends ApiTestCase
         $this->assertCount(100, $response->toArray());
     }
 
+    public function testLimitedTaskCollectionProvidedViaGetRequest(): void
+    {
+        //Arrange
+        TaskFactory::createMany(100);
+
+        //Act
+        $response = $this->client->request(
+            HttpOperation::METHOD_GET,
+            '/tasks',
+            [
+                'headers' => ['accept' => 'application/json'],
+                'query' => [
+                    'page' => 2,
+                    'limit' => 10,
+                ]
+            ]
+        );
+
+        //Assert
+        $this->assertCount(10, $response->toArray());
+    }
+
     public function testSingleTaskProvidedViaGetRequest(): void
     {
         //Arrange
