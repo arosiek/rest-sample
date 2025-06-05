@@ -28,45 +28,45 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Patch(),
         new Delete(),
     ],
-    normalizationContext: ['groups' => ['Task:Read']],
-    denormalizationContext: ['groups' => ['Task:Write']],
+    normalizationContext: ['groups' => ['Read']],
+    denormalizationContext: ['groups' => ['Write']],
     paginationEnabled: false,
 )]
 #[ApiFilter(SearchFilter::class, properties: ['status' => 'exact'])]
 #[ORM\HasLifecycleCallbacks]
 class Task
 {
-    #[Groups(['Task:Read'])]
+    #[Groups(['Read'])]
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[Groups(['Task:Read', 'Task:Write'])]
+    #[Groups(['Read', 'Write'])]
     #[Assert\NotBlank()]
     #[Assert\NotNull()]
     #[ORM\Column(length: 255)]
     private string $title;
 
-    #[Groups(['Task:Read', 'Task:Write'])]
+    #[Groups(['Read', 'Write'])]
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
-    #[Groups(['Task:Read', 'Task:Write'])]
+    #[Groups(['Read', 'Write'])]
     #[ORM\Column(enumType: TaskStatus::class, options: ['default' => TaskStatus::PENDING])]
     private TaskStatus $status = TaskStatus::PENDING;
 
-    #[Groups(['Task:Read', 'Task:Write'])]
+    #[Groups(['Read', 'Write'])]
     #[ApiProperty(openapiContext: ['type' => 'string', 'format' => 'date-time', 'example' => '2025-06-04 07:18:22'])]
     #[ORM\Column(nullable: true)]
     private ?DateTimeImmutable $due_date = null;
 
-    #[Groups(['Task:Read'])]
+    #[Groups(['Read'])]
     #[ApiProperty(openapiContext: ['type' => 'string', 'format' => 'date-time', 'example' => '2025-06-04 07:18:22'])]
     #[ORM\Column]
     private ?DateTimeImmutable $created_at = null;
 
-    #[Groups(['Task:Read'])]
+    #[Groups(['Read'])]
     #[ApiProperty(openapiContext: ['type' => 'string', 'format' => 'date-time', 'example' => '2025-06-04 07:18:22'])]
     #[ORM\Column]
     private ?DateTimeImmutable $updated_at = null;

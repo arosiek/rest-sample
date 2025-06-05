@@ -26,7 +26,7 @@
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "$ref": "#/components/schemas/Task-Task.Read"
+                                        "$ref": "#/components/schemas/Task-Read"
                                     }
                                 }
                             }
@@ -75,6 +75,23 @@
                         "style": "form",
                         "explode": false,
                         "allowReserved": false
+                    },
+                    {
+                        "name": "status[]",
+                        "in": "query",
+                        "description": "Filter by multiple statuses (Logical `OR`)",
+                        "required": false,
+                        "deprecated": false,
+                        "allowEmptyValue": false,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "style": "form",
+                        "explode": true,
+                        "allowReserved": false
                     }
                 ],
                 "deprecated": false
@@ -90,7 +107,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/Task-Task.Read"
+                                    "$ref": "#/components/schemas/Task-Read"
                                 }
                             }
                         },
@@ -147,7 +164,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/Task-Task.Write"
+                                "$ref": "#/components/schemas/Task-Write"
                             }
                         }
                     },
@@ -168,7 +185,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/Task-Task.Read"
+                                    "$ref": "#/components/schemas/Task-Read"
                                 }
                             }
                         }
@@ -277,7 +294,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/Task-Task.Read"
+                                    "$ref": "#/components/schemas/Task-Read"
                                 }
                             }
                         },
@@ -370,7 +387,7 @@
                     "content": {
                         "application/merge-patch+json": {
                             "schema": {
-                                "$ref": "#/components/schemas/Task-Task.Write"
+                                "$ref": "#/components/schemas/Task-Write"
                             }
                         }
                     },
@@ -567,7 +584,7 @@
                     }
                 }
             },
-            "Task-Task.Read": {
+            "Task-Read": {
                 "type": "object",
                 "description": "",
                 "deprecated": false,
@@ -617,7 +634,7 @@
                     "title"
                 ]
             },
-            "Task-Task.Write": {
+            "Task-Write": {
                 "type": "object",
                 "description": "",
                 "deprecated": false,

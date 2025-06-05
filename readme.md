@@ -52,6 +52,12 @@ API documentation is available in the `swagger_docs.json` file or via:
 
 [https://petstore.swagger.io/?url=https://raw.githubusercontent.com/arosiek/rest-sample/main/swagger_docs.json](https://petstore.swagger.io/?url=https://raw.githubusercontent.com/arosiek/rest-sample/main/swagger_docs.json)
 
+Type this command to refresh swagger_docs.json:
+    
+```bash
+symfony console api:openapi:export --output=swagger_docs.json 
+```
+
 ## Comment
 
 Requirement 2.4 referred to the PUT method. However, based on the description and RESTful standards, it should be PATCH.  
