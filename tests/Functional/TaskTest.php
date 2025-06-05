@@ -56,5 +56,4 @@ class TaskTest extends ApiTestCase
             ])
         );
     }
-
 }
