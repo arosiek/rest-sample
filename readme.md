@@ -2,44 +2,57 @@
 
 ## Introduction
 
+_Add a short project description here._
+
 ## Installation
-* [x] ```wget https://get.symfony.com/cli/installer -O - | bash```
-* [x] ```mv ~/.symfony5/bin/symfony /usr/local/bin/symfony```
-* [x] ```symfony composer install && symfony serve -d```
-* [x] ``````
-* [x] ```symfony console doctrine:database:create```
-* [x] ```symfony console doctrine:schema:create```
-* [x] ``````
-* [x] ``````
 
-### GitHooks / Static test in pre-commit
-You may use `.githooks` directory to have pre-commit actions like validate schema directory and php coding standards (PHP-CodeSniffer and phpstan).
-It will automatically trigger checking on committed files and it will use `php-cbf` to fix it if necessary.
+1. Install Symfony CLI:
+   ```bash
+   wget https://get.symfony.com/cli/installer -O - | bash
+   mv ~/.symfony5/bin/symfony /usr/local/bin/symfony
+   ```
 
-To include `.githooks` directory in the repository use command:
+2. Install dependencies and start the development server:
+   ```bash
+   symfony composer install
+   symfony serve -d
+   ```
+
+3. Create the database and schema:
+   ```bash
+   symfony console doctrine:database:create
+   symfony console doctrine:schema:create
+   ```
+
+## Git Hooks / Static Test in Pre-commit
+
+You can use the `.githooks` directory to enable pre-commit actions such as schema validation and PHP code style checks (PHP_CodeSniffer and PHPStan).  
+These checks will be automatically triggered on staged files and `php-cbf` will be used to fix issues if needed.
+
+To activate `.githooks` in the repository, run:
 
 ```bash
 git config core.hooksPath .githooks
 ```
 
+## Static and Unit Tests
 
-## Static or unit tests:
+Run the following commands:
 
 ```bash
-symfony composer phpcs-check      #to run phpcbf fix + phpcs test
-```
-```bash
-symfony composer phpstan-check    #to run phpstan analyse
-```
-```bash
-symfony composer phpunit-check    #to run unit/functional tests
-```
-```bash
-symfony composer analyse          #to run all above
+symfony composer phpcs-check      # Run phpcbf fix + phpcs check
+symfony composer phpstan-check    # Run phpstan analysis
+symfony composer phpunit-check    # Run unit/functional tests
+symfony composer analyse          # Run all of the above
 ```
 
 ## RESTful API Documentation
 
+API documentation is available in the `swagger_docs.json` file or via:
+
+[https://petstore.swagger.io/?url=https://github.com/arosiek/rest-sample/blob/main/swagger_docs.json](https://petstore.swagger.io/?url=https://github.com/arosiek/rest-sample/blob/main/swagger_docs.json)
+
 ## Comment
-Requirement 2.4 referred to the PUT method. However, according to the description and RESTful standards, it should be the PATCH method.
-PUT replaces the entire resource with new data, whereas PATCH updates only specific fields of the resource.
+
+Requirement 2.4 referred to the PUT method. However, based on the description and RESTful standards, it should be PATCH.  
+PUT replaces the entire resource with new data, while PATCH updates only specific fields.
