@@ -34,6 +34,7 @@
     "require-dev": {
         "phpstan/phpstan": "^2.1",
         "phpunit/phpunit": "^12.1",
+        "squizlabs/php_codesniffer": "^3.13",
         "symfony/browser-kit": "7.3.*",
         "symfony/css-selector": "7.3.*",
         "symfony/maker-bundle": "^1.63"
@@ -80,7 +81,12 @@
         ],
         "phpunit-check": "phpunit --configuration phpunit.dist.xml",
         "phpstan-check": ["phpstan analyse --memory-limit=512M"],
+        "phpcs-check": [
+            "phpcbf -q || true",
+            "phpcs"
+        ],
         "analyse": [
+            "@phpcs-check",
             "@phpstan-check",
             "@phpunit-check"
         ]
