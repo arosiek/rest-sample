@@ -1,0 +1,15 @@
+parameters:
+    phpVersion: 80300
+    level: max
+    paths:
+        - bin/
+        - config/
+        - public/
+        - src/
+        - tests/
+    parallel:
+        maximumNumberOfProcesses: 5
+    excludePaths:
+        analyse:
+            - tests/bootstrap.php
+            - public/index.php
