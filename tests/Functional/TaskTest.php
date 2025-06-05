@@ -5,6 +5,7 @@ namespace App\Tests\Functional;
 use ApiPlatform\Metadata\HttpOperation;
 use ApiPlatform\Symfony\Bundle\Test\ApiTestCase;
 use ApiPlatform\Symfony\Bundle\Test\Client;
+use App\Entity\Task;
 use App\Enum\TaskStatus;
 use App\Factory\TaskFactory;
 use DateTimeImmutable;
@@ -75,4 +76,54 @@ class TaskTest extends ApiTestCase
         //Assert
         $this->assertCount(100, $response->toArray());
     }
+
+    public function testSingleTaskProvidedViaGetRequest(): void
+    {
+        //Arrange
+        $taskProxy = TaskFactory::createOne();
+
+        //Act
+        $response = $this->client->request(
+            HttpOperation::METHOD_GET,
+            '/tasks/' . $taskProxy->getId(),
+            [
+                'headers' => ['accept' => 'application/json'],
+            ]
+        );
+
+        //Assert
+        $this->assertJsonContains(array_filter($this->mapTaskToResponseData($taskProxy)));
+    }
+
+    /**
+     * @return array<string,mixed>
+     */
+    private function mapTaskToResponseData(Task $task): array
+    {
+        return [
+            'id' => $task->getId(),
+            'title' => $task->getTitle(),
+            'description' => $task->getDescription(),
+            'status' => $task->getStatus()?->value,
+            'due_date' => $task->getDueDate()?->format('Y-m-d H:i:s'),
+            'created_at' => $task->getCreatedAt()?->format('Y-m-d H:i:s'),
+            'updated_at' => $task->getUpdatedAt()?->format('Y-m-d H:i:s'),
+        ];
+    }
+
+    public function testGetSingleTaskReturns404ForNotExisting(): void
+    {
+        //Act
+        $response = $this->client->request(
+            HttpOperation::METHOD_GET,
+            '/tasks/0',
+            [
+                'headers' => ['accept' => 'application/json'],
+            ]
+        );
+
+        //Assert
+        $this->assertResponseStatusCodeSame(404);
+    }
+
 }
