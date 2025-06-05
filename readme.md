@@ -50,7 +50,7 @@ symfony composer analyse          # Run all of the above
 
 API documentation is available in the `swagger_docs.json` file or via:
 
-[https://petstore.swagger.io/?url=https://github.com/arosiek/rest-sample/blob/main/swagger_docs.json](https://petstore.swagger.io/?url=https://github.com/arosiek/rest-sample/blob/main/swagger_docs.json)
+[https://petstore.swagger.io/?url=https://raw.githubusercontent.com/arosiek/rest-sample/main/swagger_docs.json](https://petstore.swagger.io/?url=https://raw.githubusercontent.com/arosiek/rest-sample/main/swagger_docs.json)
 
 ## Comment
 

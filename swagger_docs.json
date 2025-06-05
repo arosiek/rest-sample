@@ -37,9 +37,35 @@
                 "description": "Retrieves the collection of Task resources.",
                 "parameters": [
                     {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "required": false,
+                        "deprecated": false,
+                        "allowEmptyValue": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": null,
+                            "minimum": 1
+                        }
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "Items per page",
+                        "required": false,
+                        "deprecated": false,
+                        "allowEmptyValue": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": null,
+                            "minimum": 1
+                        }
+                    },
+                    {
                         "name": "status",
                         "in": "query",
-                        "description": "",
+                        "description": "Status filter",
                         "required": false,
                         "deprecated": false,
                         "allowEmptyValue": false,
@@ -48,23 +74,6 @@
                         },
                         "style": "form",
                         "explode": false,
-                        "allowReserved": false
-                    },
-                    {
-                        "name": "status[]",
-                        "in": "query",
-                        "description": "",
-                        "required": false,
-                        "deprecated": false,
-                        "allowEmptyValue": false,
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "type": "string"
-                            }
-                        },
-                        "style": "form",
-                        "explode": true,
                         "allowReserved": false
                     }
                 ],
