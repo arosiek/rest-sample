@@ -8,7 +8,9 @@ use ApiPlatform\Symfony\Bundle\Test\Client;
 use App\Entity\Task;
 use App\Enum\TaskStatus;
 use App\Factory\TaskFactory;
+use App\Repository\TaskRepository;
 use DateTimeImmutable;
+use Doctrine\Bundle\DoctrineBundle\Registry;
 use Zenstruck\Foundry\Test\Factories;
 use Zenstruck\Foundry\Test\ResetDatabase;
 
@@ -180,5 +182,51 @@ class TaskTest extends ApiTestCase
 
         //Assert
         $this->assertResponseStatusCodeSame(404);
+    }
+
+    public function testTaskSuccessfullyRemovedViaDeleteRequest(): void
+    {
+        //Arrange
+        $taskProxy = TaskFactory::createOne();
+        $taskId = $taskProxy->getId();
+        $taskRepository = $this->getTaskRepository();
+
+        //Act
+        $response = $this->client->request(
+            HttpOperation::METHOD_DELETE,
+            '/tasks/' . $taskId,
+            [
+                'headers' => ['accept' => 'application/json',],
+            ]
+        );
+
+        //Assert
+        $this->assertResponseStatusCodeSame(204);
+        $this->assertNull($taskRepository->find($taskId));
+    }
+
+    public function testDeleteSingleTaskReturns404ForNotExisting(): void
+    {
+        //Act
+        $response = $this->client->request(
+            HttpOperation::METHOD_DELETE,
+            '/tasks/0',
+            [
+                'headers' => ['accept' => 'application/json'],
+            ]
+        );
+
+        //Assert
+        $this->assertResponseStatusCodeSame(404);
+    }
+
+    private function getTaskRepository(): TaskRepository
+    {
+        /** @var Registry $doctrine */
+        $doctrine = $this->getContainer()->get('doctrine');
+        /** @var TaskRepository $repository */
+        $repository = $doctrine->getRepository(Task::class);
+
+        return $repository;
     }
 }
